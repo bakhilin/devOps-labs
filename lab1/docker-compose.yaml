@@ -1,0 +1,11 @@
+version: "2.3"
+
+services:
+  nginx:
+    build: ./nginx
+    ports: 
+      - "80:80"
+    volumes: 
+      - ./nginx/pages/:/usr/share/nginx/html
+      - ./nginx/configuration/:/etc/nginx/ 
+    
