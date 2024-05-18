@@ -1,12 +1,14 @@
 version: "3.8"
 
 services:
-  
   golang-app: 
     build:
       context: .
       dockerfile: Dockerfile
     restart: on-failure
+    environment:
+      - PORT_APP=9000
+      
     
 
     

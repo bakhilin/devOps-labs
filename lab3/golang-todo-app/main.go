@@ -230,7 +230,7 @@ func main() {
 	router.Mount("/todo", todoHandlers())
 
 	server := &http.Server{
-		Addr:         ":9000",
+		Addr:         ":"+os.Getenv("PORT_APP"),
 		Handler:      router,
 		ReadTimeout:  60 * time.Second,
 		WriteTimeout: 60 * time.Second,
