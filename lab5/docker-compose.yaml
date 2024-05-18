@@ -9,20 +9,30 @@ volumes:
 services:
   
   nginx_proxy:
-    image: "nginx:alpine"
-    volumes: 
-      - ./nginx-config:/etc/nginx/conf.d
+    build:
+      context: "nginx"
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 3000:80
+    depends_on:
+      - frontend
+    networks:
+      - common-net  
 
   db:
     image: "mysql"
-    depends_on: 
-      - nginx_proxy
-    env_file:
-      - .env
     networks:
       - common-net
+    environment:
+      - MYSQL_DATABASE=hobbie_db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_ROOT_PASSWORD=root
+      - DB_HOST=db  
+
 
   backend:
     build:
@@ -30,8 +40,6 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - db
-    ports:
-      - 8080
     environment:
       - MYSQL_DATABASE=hobbie_db
       - MYSQL_PORT=3306
@@ -41,13 +49,13 @@ services:
       - DB_HOST=db
     networks:
       - common-net
-
+  
   frontend:
     build: 
       context: "react-frontend"
       dockerfile: Dockerfile
     depends_on:
-      - nginx_proxy
+      - backend
     environment:
       - REACT_APP_API_BASE_URL=http://localhost:3000
     networks:

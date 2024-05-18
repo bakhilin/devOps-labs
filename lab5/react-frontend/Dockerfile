@@ -5,4 +5,4 @@ RUN npm install
 COPY . .
 CMD ["npm", "start"]
 
-
+RUN rm -rf /var/cache/apk/*
