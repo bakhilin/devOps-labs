@@ -5,6 +5,7 @@ RUN mvn clean install
 RUN mvn package
 CMD ["java", "-jar", "target/hobbie-backend-0.0.1-SNAPSHOT.jar"]
 
+RUN rm -rf /var/cache/apk/*
 
 
 # FROM adoptopenjdk/openjdk11:alpine-jre  
